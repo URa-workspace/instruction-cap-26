@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="ru"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+    <title>Инфопостер: Действия при БПЛА-опасности</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&amp;family=Roboto:wght@400;700;900&amp;display=swap" rel="stylesheet">
+    <style>
+        /* ===== БАЗОВЫЕ СБРОСЫ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #e9edf2;
+            display: flex;
+            justify-content: center;
+            padding: 20px 10px;
+            font-family: 'Roboto', 'Roboto Condensed', sans-serif;
+            color: #1a1a1a;
+            min-height: 100vh;
+        }
+
+        /* ===== ОБЩАЯ ОБЁРТКА ===== */
+        .poster {
+            max-width: 1200px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+            padding: 30px 30px 25px;
+            border: 1px solid #d0d7de;
+            transition: all 0.2s;
+        }
+
+        /* ===== ЛОГОТИП + ЗАГОЛОВОК ===== */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 4px solid #1d7ec3;
+            padding-bottom: 18px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .logo-placeholder {
+            flex-shrink: 0;
+            width: 90px;
+            height: 90px;
+            background: #f0f4fa;
+            border: 2px dashed #1d7ec3;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1d7ec3;
+            text-align: center;
+            line-height: 1.3;
+            padding: 6px;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        .header-text h1 {
+            font-size: 34px;
+            font-weight: 900;
+            color: #1d7ec3;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        .header-text h1 small {
+            display: block;
+            font-size: 20px;
+            font-weight: 400;
+            color: #2c3e50;
+            text-transform: none;
+            letter-spacing: 0.3px;
+            margin-top: 4px;
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            background: #1d7ec3;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            margin-left: auto;
+        }
+
+        .header-right small {
+            font-size: 14px;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* ===== СЕТКА 2 КОЛОНКИ ===== */
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        /* ===== КАРТОЧКИ ===== */
+        .card {
+            background: #f8faff;
+            border-radius: 14px;
+            padding: 20px 22px 22px;
+            border: 1px solid #e6edf5;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: #1d7ec3;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #1d7ec3;
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+            letter-spacing: 0.3px;
+        }
+
+        .card-title .icon {
+            font-size: 24px;
+        }
+
+        .card-danger .card-title {
+            color: #df0002;
+            border-bottom-color: #df0002;
+        }
+
+        .card-success .card-title {
+            color: #4ca839;
+            border-bottom-color: #4ca839;
+        }
+
+        /* ===== ОБНАРУЖЕНИЕ ===== */
+        .detection-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .detection-item {
+            background: #ffffff;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border-left: 6px solid #1d7ec3;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .detection-item .emoji {
+            font-size: 28px;
+            min-width: 40px;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .detection-item strong {
+            color: #1a1a1a;
+            display: block;
+            font-weight: 700;
+        }
+
+        .detection-item span {
+            font-weight: 400;
+            color: #2c3e50;
+            font-size: 15px;
+        }
+
+        .detection-item.highlight-sound {
+            border-left-color: #df0002;
+            background: #fff6f6;
+        }
+
+        .monitor-badge {
+            background: #eef5fb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            border-left: 4px solid #4ca839;
+            font-size: 14px;
+            margin-top: 12px;
+        }
+
+        .monitor-badge strong {
+            color: #1d7ec3;
+        }
+
+        /* ===== ШАГИ АЛГОРИТМА ===== */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            background: #ffffff;
+            padding: 10px 16px;
+            border-radius: 10px;
+            border-bottom: 1px solid #e9edf2;
+        }
+
+        .step-num {
+            background: #1d7ec3;
+            color: #fff;
+            font-weight: 900;
+            font-size: 17px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .step-urgent .step-num {
+            background: #df0002;
+        }
+
+        .step-content {
+            font-size: 15px;
+            line-height: 1.4;
+            color: #1a1a1a;
+        }
+
+        .step-content strong {
+            color: #1d7ec3;
+        }
+
+        .step-content .radio-ch {
+            background: #1d7ec3;
+            color: #fff;
+            padding: 0 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .step-urgent .step-content strong {
+            color: #df0002;
+        }
+
+        /* ===== СПИСОК РЕГИОНАЛЬНОЙ ОПАСНОСТИ ===== */
+        .region-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .region-list li {
+            padding: 10px 0 10px 32px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%234ca839" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>') left center no-repeat;
+            background-size: 20px;
+            font-size: 15px;
+            line-height: 1.4;
+            border-bottom: 1px solid #e9edf2;
+        }
+
+        .region-list li:last-child {
+            border-bottom: 0;
+        }
+
+        .region-list li strong {
+            color: #1d7ec3;
+        }
+
+        /* ===== ЗАПРЕТЫ ===== */
+        .prohibit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .prohibit-item {
+            background: #fff6f6;
+            border: 1px solid #f8d7da;
+            border-radius: 10px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            font-size: 14px;
+            color: #8b0000;
+        }
+
+        .prohibit-item .x {
+            background: #df0002;
+            color: #fff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        /* ===== ПАМЯТКА (краткий алгоритм) ===== */
+        .quick-algo {
+            background: #f0f7fe;
+            border-radius: 14px;
+            padding: 18px 24px;
+            margin-top: 24px;
+            border: 2px solid #1d7ec3;
+            text-align: center;
+        }
+
+        .quick-algo .title {
+            font-weight: 900;
+            color: #1d7ec3;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quick-algo .algo-text {
+            font-size: 15px;
+            font-weight: 400;
+            color: #1a1a1a;
+            margin-top: 6px;
+            line-height: 1.6;
+        }
+
+        .quick-algo .algo-text strong {
+            color: #1d7ec3;
+        }
+
+        .quick-algo .algo-text .red {
+            color: #df0002;
+            font-weight: 700;
+        }
+
+        /* ===== ФУТЕР ===== */
+        .footer {
+            margin-top: 28px;
+            padding-top: 18px;
+            border-top: 2px solid #d0d7de;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .footer .warning {
+            font-weight: 700;
+            color: #df0002;
+            background: #fff0f0;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-size: 16px;
+            border: 1px solid #df0002;
+        }
+
+        .footer .small {
+            font-size: 13px;
+            color: #5a6a7a;
+        }
+
+        /* ===== АДАПТИВ ДЛЯ МОБИЛЬНЫХ ===== */
+        @media (max-width: 820px) {
+            * {
+                    hyphens: auto;
+            }
+            .poster {
+                padding: 18px 14px 18px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .header-right {
+                margin-left: 0;
+                white-space: normal;
+                width: 100%;
+                justify-content: center;
+                align-items: center;
+                padding: 8px 16px;
+                font-size: 18px;
+            }
+
+            .header-text h1 {
+                font-size: 26px;
+            }
+
+            .header-text h1 small {
+                font-size: 17px;
+            }
+
+            .grid-2col {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .prohibit-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 16px 14px;
+            }
+
+            .step-content {
+                font-size: 14px;
+            }
+
+            .detection-item {
+                padding: 10px 12px 10px 6px;
+            }
+
+            .detection-item span {
+                font-size: 14px;
+                hyphens: auto;
+            }
+
+            .quick-algo {
+                padding: 14px 16px;
+            }
+
+            .quick-algo .algo-text {
+                font-size: 14px;
+            }
+
+            .footer {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .logo-placeholder {
+                width: 70px;
+                height: 70px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-text h1 {
+                font-size: 22px;
+            }
+            .header-text h1 small {
+                font-size: 15px;
+            }
+            .header-right {
+                font-size: 16px;
+                padding: 6px 14px;
+            }
+            .card-title {
+                font-size: 16px;
+            }
+            .step-num {
+                width: 20px;
+                height: 20px;
+                font-size: 12px;
+            }
+            .prohibit-item {
+                font-size: 13px;
+                padding: 10px 12px 10px 6px;
+            }
+            .region-list li {
+                font-size: 14px;
+            }
+            .quick-algo .title {
+                font-size: 17px;
+            }
+        }
+
+        /* ===== СТИЛИ ДЛЯ ПЕЧАТИ (А4 альбомная) ===== */
+        @media print {
+            body {
+                background: #fff;
+                padding: 0;
+                margin: 0;
+                display: block;
+            }
+
+            .poster {
+                max-width: 100%;
+                border-radius: 0;
+                box-shadow: none;
+                border: none;
+                padding: 18px 20px 16px;
+                background: #fff;
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
+
+            /* Устанавливаем размер страницы А4, альбомная */
+            @page {
+                size: A4 landscape;
+                margin: 12mm 14mm;
+            }
+
+            .header {
+                border-bottom-width: 3px;
+                padding-bottom: 12px;
+                margin-bottom: 18px;
+            }
+
+            .logo-placeholder {
+                border: 1px solid #1d7ec3;
+                background: #f4f8fc;
+                width: 70px;
+                height: 70px;
+                font-size: 11px;
+            }
+
+            .header-text h1 {
+                font-size: 28px;
+            }
+            .header-text h1 small {
+                font-size: 17px;
+            }
+
+            .header-right {
+                background: #1d7ec3;
+                padding: 6px 18px;
+                font-size: 18px;
+            }
+            .header-right small {
+                font-size: 12px;
+            }
+
+            .card {
+                background: #fafcff;
+                border: 1px solid #d0d7de;
+                box-shadow: none;
+                padding: 14px 16px;
+                border-radius: 8px;
+            }
+
+            .card-title {
+                font-size: 16px;
+                border-bottom-width: 2px;
+                padding-bottom: 6px;
+                margin-bottom: 12px;
+            }
+
+            .detection-item {
+                background: #fff;
+                border-left-width: 4px;
+                padding: 8px 12px;
+                box-shadow: none;
+            }
+            .detection-item span {
+                font-size: 13px;
+            }
+
+            .step {
+                background: #fff;
+                padding: 6px 12px;
+                border-bottom: 1px solid #e9edf2;
+            }
+            .step-content {
+                font-size: 13px;
+            }
+            .step-num {
+                width: 28px;
+                height: 28px;
+                font-size: 15px;
+            }
+
+            .region-list li {
+                font-size: 13px;
+                padding: 6px 0 6px 28px;
+                background-size: 18px;
+            }
+
+            .prohibit-item {
+                background: #fff6f6;
+                padding: 8px 12px;
+                font-size: 13px;
+                border-radius: 6px;
+            }
+            .prohibit-item .x {
+                width: 20px;
+                height: 20px;
+                font-size: 14px;
+            }
+
+            .quick-algo {
+                background: #f0f7fe;
+                padding: 12px 18px;
+                margin-top: 16px;
+                border-width: 2px;
+            }
+            .quick-algo .title {
+                font-size: 17px;
+            }
+            .quick-algo .algo-text {
+                font-size: 13px;
+            }
+
+            .footer {
+                margin-top: 18px;
+                padding-top: 12px;
+                border-top: 1px solid #d0d7de;
+            }
+            .footer .warning {
+                font-size: 14px;
+                padding: 4px 18px;
+                background: #fff0f0;
+            }
+            .footer .small {
+                font-size: 11px;
+            }
+
+            /* Скрываем лишнее при печати */
+            .no-print {
+                display: none;
+            }
+
+            /* Принудительно разрываем страницы, если нужно */
+            .grid-2col {
+                page-break-inside: avoid;
+            }
+            .card {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="poster">
+
+    <!-- ===== HEADER с логотипом ===== -->
+    <div class="header">
+        <div class="logo-placeholder"> <img class="lazy" src="https://cdn4.telesco.pe/file/G6873spG-W6B4jW0MBMr_1YCF_ZJIwcx7QwLKgPCbiAgAYx3JLJOvJbBc5oKVXHTsTp6z-D3XvU0O1l7IxAyeEacW3J-sVH5fHi-AlF5QhY_OuORCg5OU4e22MAPkaVArCU_qVikCou71u3oq27M0YOA7cy4fW5NQcSNjCUKCYz2hFYrp-bkFsbXCyVuTzkpX5tMG6ePUxp1BQh7KxxADqLxmvQvD2-tHfRZnHJo61VOUHQJ6VaSWmYXKTrfZXBTHuQaF5iTLIPD1bUIYW7P9n8oyxFPrGKUgzSha3NWOIYz7VFlc_ebv2on__8G-QsuRBpmGO9XMeiFJLaut2QShQ.jpg" alt="ОО ФПСГБ" width="auto" style="
+    width: 114px;
+">        </div>
+        <div class="header-text">
+            <h1>
+                ДЕЙСТВИЯ КАПИТАНА
+                <small>Парусного судна при опасности-БПЛА (акватория Бердянского залива)</small>
+            </h1>
+        </div>
+        <div class="header-right">
+            Каналы для связи 14 / 12
+            <small>радио 2, радио 5 по указанию</small>
+        </div>
+    </div>
+
+    <!-- ===== СЕТКА: ОБНАРУЖЕНИЕ + СВЯЗЬ ===== -->
+    <div class="grid-2col">
+        <!-- ОБНАРУЖЕНИЕ -->
+        <div class="card">
+            <div class="card-title"><span class="icon">👁️</span> Признаки обнаружения БПЛА</div>
+            <div class="detection-list">
+                <div class="detection-item">
+                    <div class="emoji">✈️</div>
+                    <div><strong>Визуальный контакт</strong><span>Беспилотник движется <strong>по направлению к яхте</strong>. Оцените траекторию, скорость, расстояние.</span></div>
+                </div>
+                <div class="detection-item highlight-sound">
+                    <div class="emoji">🔊</div>
+                    <div><strong>Характерный звук</strong><span>Напоминает <strong>работу мопеда</strong> (гул двигателя).</span></div>
+                </div>
+                <div class="monitor-badge">
+                    <strong>📻 Мониторинг до угрозы:</strong> Отслеживайте информацию в местных СМИ и оповещений на ресурсах в <strong>Telegram/MAX @LPR1_treugolnik/@LPRalarm</strong> 
+Постояный мониторинг радио эфира на каналах <strong> 12 и 14</strong></div>
+            </div>
+        </div>
+
+        <!-- СВЯЗЬ И КООРДИНАЦИЯ -->
+        <div class="card card-success">
+            <div class="card-title"><span class="icon">📻</span> Связь &amp; Координация</div>
+            <div style="display:flex; flex-direction:column; gap:14px;">
+                <div style="background:#eef5fb; padding:14px 18px; border-radius:10px; border-left:6px solid #1d7ec3;">
+                    <div style="font-weight:700;color: #d30000;font-size:16px;">ПОРЯДОК СВЯЗИ (ЭКСТРЕННЫЙ)</div>
+                    <div style="font-size:14px; margin-top:5px; color:#1a1a1a;">
+                        <strong>ТОЛЬКО при явной угрозе поражения судна!</strong> Передать сигнал бедствия по <strong style="background:#1d7ec3; color:#fff; padding:0 8px; border-radius:4px;">УКВ радиостанции</strong> (по каналам <strong style="background:#1d7ec3; color:#fff; padding:0 8px; border-radius:4px;">12 / 14</strong> согласно инструкции).
+                    </div>
+                    <div style="font-size:13px; margin-top:8px; color:#4ca839; background:#e6f5e6; padding:6px 12px; border-radius:6px;">
+                        ✅ Далее — строго следовать голосовым рекомендациям с берега.
+                    </div>
+                </div>
+                <div style="font-size:14px; color:#2c3e50; padding-left:5px;">
+                    <strong>Общее правило:</strong> При объявлении опасности в регионе — немедленно оценить возможность отхода к берегу или в безопасную акваторию.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== АЛГОРИТМ (ОСНОВНОЙ) ===== -->
+    <div class="card" style="margin-bottom:22px;">
+        <div class="card-title"><span class="icon">⚡</span> Алгоритм действий капитана при обнаружении БПЛА</div>
+        <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Оценить угрозу:</strong> Определить направление полёта, скорость и расстояние до яхты. Принять решение о манёвре.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Оповестить экипаж:</strong> Громко и чётко подать команду <strong>«Воздушная опасность!»</strong> с указанием направления.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Маневр уклонения:</strong> Постараться отойти на <strong>максимально безопасное расстояние</strong> от траектории БПЛА.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Если осадка позволяет:</strong> Срочно направить яхту к берегу, <strong>пришвартоваться</strong> и высадить экипаж.</div></div>
+            <div class="step"><div class="step-num">5</div><div class="step-content"><strong>В открытом море (нет берега):</strong> Раздать <strong>спасательные жилеты</strong> всем членам экипажа, подготовиться к экстренному покиданию судна. Заглушить двигатель, растравить/убрать паруса. При покидании судна отдать по корме длинный конец.</div></div>
+            <div class="step step-urgent"><div class="step-num">6</div><div class="step-content"><strong>Экстренная связь (критично!):</strong> Только при <strong>явной угрозе поражения</strong> судна — сообщить по <span class="radio-ch">УКВ</span> (каналы 12/14) и запросить помощь.</div></div>
+            <div class="step"><div class="step-num">7</div><div class="step-content"><strong>Слушать команды:</strong> Строго выполнять голосовые инструкции и рекомендации по <span class="radio-ch">УКВ</span> от диспетчерских служб.</div></div>
+        </div>
+    </div>
+
+    <!-- ===== СЕТКА: ОПАСНОСТЬ В РЕГИОНЕ + ЗАПРЕТЫ ===== -->
+    <div class="grid-2col">
+        <!-- Региональная опасность -->
+        <div class="card card-success">
+            <div class="card-title"><span class="icon">🌊</span> Действия при объявленной опасности в регионе</div>
+            <ul class="region-list">
+                <li><strong>Подойти к берегу</strong> (если возможно) и пришвартоваться. Зайти в ближайшую бухту / укрытие.</li>
+                <li><strong>Покинуть судно</strong> и отойти от него на безопасное расстояние.</li>
+                <li><strong>Если подход к берегу невозможен</strong> — максимально удалиться в открытое море от опасного района.</li>
+                <li><strong>Высадить экипаж на берег</strong> при первой же возможности.</li>
+            </ul>
+            <div style="margin-top:14px; background: #e6f5e6; padding:10px 14px; border-radius:8px; border:1px dashed #4ca839; font-size:14px;">
+                ⚠️ При получении сигнала по ТГ / СМИ — не медлить, действовать по алгоритму.
+            </div>
+        </div>
+
+        <!-- Запреты -->
+        <div class="card card-danger">
+            <div class="card-title"><span class="icon">🚫</span> СТРОГО ЗАПРЕЩАЕТСЯ</div>
+            <div class="prohibit-grid">
+                <div class="prohibit-item"><span class="x">✕</span> Фотографировать / снимать работу ПВО или пролёт БПЛА</div>
+                <div class="prohibit-item"><span class="x">✕</span> Сообщать другим лицам (вне судна) о текущей опасности</div>
+                <div class="prohibit-item"><span class="x">✕</span> Подходить к упавшему или сбитому БПЛА (взрывоопасен)</div>
+                <div class="prohibit-item"><span class="x">✕</span> Трогать / перемещать обломки БПЛА</div>
+                <div class="prohibit-item" style="grid-column: 1 / -1;"><span class="x">✕</span> Покидать судно без спасательного жилета</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== КРАТКАЯ ПАМЯТКА ===== -->
+    <div class="quick-algo">
+        <div class="title">📌 Краткая памятка (Алгоритм 7 шагов)</div>
+        <div class="algo-text">
+            <strong>1.</strong> Оценил траекторию &nbsp;|&nbsp; <strong>2.</strong> Оповестил экипаж &nbsp;|&nbsp; <strong>3.</strong> Ушёл с траектории (к берегу / в море) &nbsp;|&nbsp;
+            <strong>4.</strong> Подготовил жилеты &nbsp;|&nbsp; <strong>5.</strong> Связь по <strong>УКВ-14</strong> (только при атаке!) &nbsp;|&nbsp;
+            <strong>6.</strong> Слушаю <strong>УКВ-2/5</strong> &nbsp;|&nbsp; <strong>7.</strong> <span class="red">НЕ ФОТОГРАФИРУЮ</span> и <span class="red">НЕ ТРОГАЮ</span> обломки.
+        </div>
+    </div>
+
+    <!-- ===== ФУТЕР ===== -->
+    <div class="footer">
+        <div class="warning">⚓ Жизнь экипажа — главный приоритет</div>
+        <div class="small">Информационный постер для капитанов парусных яхт и спортивных судов</div>
+    </div>
+
+</div>
+
+</body></html>
